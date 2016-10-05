@@ -40,20 +40,31 @@ public class FXApplet extends JApplet{
         Platform.runLater(new Runnable() {
             //@Override
             public void run() {
-                initFX(fxPanel);
+                try {
+                    initFX(fxPanel);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 initApplet();
             }
         });
     }
 
-    private void initFX(JFXPanel fxPanel) { // This method is invoked on JavaFX thread
+    private void initFX(JFXPanel fxPanel) throws Exception { // This method is invoked on JavaFX thread
         root = new Group();
         scene = new Scene(root);
         File pdfFile = new File("C:/Users/sereo_000/Downloads/magistratura_1_kurs_4_f-t.pdf");
         Node node = null;
         final VBox root = new VBox(5);
         scene.setUserData(pdfFile);
-        print(root);
+
+        String name = print(node);
+        try {
+            Testing.main(name);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //print(root);
 
     }
 
@@ -62,7 +73,7 @@ public class FXApplet extends JApplet{
 
     }
 
-    public String print(Node node){
+    public String print(Node node) {
         ChoiceDialog dialog = new ChoiceDialog(Printer.getDefaultPrinter(), Printer.getAllPrinters());
         dialog.setHeaderText("Choose the printer!");
         dialog.setContentText("Choose a printer from available printers");
@@ -74,6 +85,6 @@ public class FXApplet extends JApplet{
             return nameOfPrinter;
         }
         return null;
-
     }
+
 }
