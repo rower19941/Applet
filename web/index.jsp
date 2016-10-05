@@ -11,7 +11,7 @@
     <title>$Title$</title>
   </head>
   <body>
-  <applet code="test.FXApplet.class" archive="org-1.0-SNAPSHOT.jar"  width="400" height="400">
+  <applet code="test.FXApplet.class" archive="org-1.0-SNAPSHOT.jar"  width="400" height="400" param=" ">
 
     Your browser does not support the <code>applet</code> tag.
 

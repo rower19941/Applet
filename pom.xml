@@ -31,5 +31,19 @@
             <version>2.0.3</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.vaadin.addons</groupId>
+            <artifactId>appletintegration</artifactId>
+
+        </dependency>
+
+
     </dependencies>
+    <repositories>
+        <repository>
+            <id>vaadin-addons</id>
+            <url>http://maven.vaadin.com/vaadin-addons</url>
+        </repository>
+    </repositories>
+
 </project>
