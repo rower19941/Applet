@@ -6,7 +6,9 @@ import javafx.print.Printer;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.Dialog;
 import javafx.scene.layout.VBox;
 
 import javax.swing.*;
@@ -53,14 +55,17 @@ public class FXApplet extends JApplet{
     private void initFX(JFXPanel fxPanel) throws Exception { // This method is invoked on JavaFX thread
         root = new Group();
         scene = new Scene(root);
+        //Сюда передавать путь из выбранного файла
         File pdfFile = new File("C:/Users/sereo_000/Downloads/magistratura_1_kurs_4_f-t.pdf");
         Node node = null;
         final VBox root = new VBox(5);
         scene.setUserData(pdfFile);
 
+        String param = this.getParameter("pathToFile");
+
         String name = print(node);
         try {
-            Testing.main(name);
+            Testing.main(name,param);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -78,11 +83,25 @@ public class FXApplet extends JApplet{
         dialog.setHeaderText("Choose the printer!");
         dialog.setContentText("Choose a printer from available printers");
         dialog.setTitle("Printer Choice");
-        Optional<Printer> opt = dialog.showAndWait();
-        if (opt.isPresent()) {
-            Printer printer = opt.get();
-            String nameOfPrinter=printer.getName();
-            return nameOfPrinter;
+        boolean justForWhile = true;
+        while (justForWhile){
+            Optional<Printer> opt = dialog.showAndWait();
+            if (opt.isPresent()) {
+                Printer printer = opt.get();
+                String nameOfPrinter = printer.getName();
+                if (nameOfPrinter.contains("PDF") || nameOfPrinter.contains("OneNote") || nameOfPrinter.contains("Fax") || nameOfPrinter.contains("Pdf") || nameOfPrinter.contains("pdf")) {
+                    Dialog errorDialog = new Dialog();
+                    errorDialog.setHeaderText("This printer is not available!");
+                    errorDialog.setTitle("Error choosing printer");
+                    errorDialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
+                    errorDialog.showAndWait();
+
+                } else {
+                    return nameOfPrinter;
+
+                }
+
+            }
         }
         return null;
     }
