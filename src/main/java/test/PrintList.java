@@ -1,7 +1,7 @@
 package test;
 
-public class PrintList /*extends Application*/ {
-    /*public String print(Node node) {
+/*public class PrintList extends Application {
+    public String print(Node node) {
         ChoiceDialog dialog = new ChoiceDialog(Printer.getDefaultPrinter(), Printer.getAllPrinters());
         dialog.setHeaderText("Choose the printer!");
         dialog.setContentText("Choose a printer from available printers");
@@ -40,5 +40,5 @@ public class PrintList /*extends Application*/ {
 
 
         Testing.main(name);
-    }*/
-}
+    }
+}*/

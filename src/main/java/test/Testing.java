@@ -38,7 +38,7 @@ import java.util.UUID;
 public class Testing {
 
 
-    public static void main(String args, String path) throws Exception {
+    public static void main(String args/*, String path*/) throws Exception {
         File temp = File.createTempFile("temp-file-name", ".tmp");
 
         System.out.println("Temp file : " + temp.getAbsolutePath());
@@ -51,15 +51,17 @@ public class Testing {
         String filenameOfPDF = idForPDF.toString().replaceAll("-","");
         UUID idForQR = UUID.randomUUID();
         String filenameOfQR = idForQR.toString().replaceAll("-","");
+        UUID idForSerNum = UUID.randomUUID();
+        String filenameOfSerNum = idForSerNum.toString().replaceAll("-","");
         String textInQrCode = "http://crunchify.com/";
 
 
         //File pdfFileForPrint = new File("C:/Users/sereo_000/Downloads/3.pdf");
-        File pdfFileForPrint = new File(path);
+        File pdfFileForPrint = new File("C:/srv/bbb-1477307762270.pdf");
 
         File pdfFileWithWatermarkAndQrCode = new File(tempFilePath+"/"+filenameOfPDF+".pdf");
-        com.lowagie.text.Image qrCode = Image.getInstance("C:/Users/sereo_000/Downloads/123.png");
-        com.lowagie.text.Image watermark = Image.getInstance("C:/Users/sereo_000/Downloads/111.png");
+
+        com.lowagie.text.Image watermark = Image.getInstance("C:/srv/111.png");
         String pathWhereQrCodeWillBeSaved = tempFilePath+"/"+filenameOfQR+".png";
         String collectionNumber = "123";
         Date currentDate;
@@ -80,13 +82,13 @@ public class Testing {
         g2.drawString(attributeOfFile,10,15);
 
         //TEMP
-        ImageIO.write(bi, "jpg",new File("C:/Users/sereo_000/Downloads/qq.jpg"));
-        com.lowagie.text.Image qeqe = Image.getInstance("C:/Users/sereo_000/Downloads/qq.jpg");
+        ImageIO.write(bi, "jpg",new File(tempFilePath+"/"+filenameOfSerNum+".jpg"));
+        com.lowagie.text.Image qeqe = Image.getInstance(tempFilePath+"/"+filenameOfSerNum+".jpg");
 
         int sizeOfQrCode = 250;
         String fileType = "png";
         QrCodeMaking(textInQrCode,fileType,sizeOfQrCode,pathWhereQrCodeWillBeSaved);
-        WatermarkAndQrCodeAddingOnFile(pdfFileForPrint,pdfFileWithWatermarkAndQrCode,qrCode,watermark,attributeOfFile,qeqe);
+        WatermarkAndQrCodeAddingOnFile(pdfFileForPrint,pdfFileWithWatermarkAndQrCode,pathWhereQrCodeWillBeSaved,watermark,attributeOfFile,qeqe);
         PrintingFile(pdfFileWithWatermarkAndQrCode,args);
         pdfFileWithWatermarkAndQrCode.deleteOnExit();
     }
@@ -129,8 +131,9 @@ public class Testing {
         }
         System.out.println("\n\nYou have successfully created QR Code.");
     }
-    private static void WatermarkAndQrCodeAddingOnFile(File pdfFileForPrint, File pdfFileWithWatermarkAndQrCode, Image qrCode, Image watermark, String attributeOfFile, Image g2) throws IOException, DocumentException {
+    private static void WatermarkAndQrCodeAddingOnFile(File pdfFileForPrint, File pdfFileWithWatermarkAndQrCode, String pathWhereQrCodeWillBeSaved, Image watermark, String attributeOfFile, Image g2) throws IOException, DocumentException {
         watermark.setAlignment(Element.ALIGN_CENTER);
+        com.lowagie.text.Image qrCode = Image.getInstance(pathWhereQrCodeWillBeSaved);
         boolean a = pdfFileForPrint.canWrite();
         PdfReader reader = new PdfReader(pdfFileForPrint.getPath());
         PdfStamper stamper = new PdfStamper(reader, new FileOutputStream(
@@ -170,6 +173,7 @@ public class Testing {
         return null;
     }
     private static void PrintingFile(File pdfFileWithWatermarkAndQrCode, String name) throws IOException, PrinterException {
+
         PrintService myPrintService = findPrintService(name);
         PrinterJob job = PrinterJob.getPrinterJob();
         PDDocument document = PDDocument.load(pdfFileWithWatermarkAndQrCode);
